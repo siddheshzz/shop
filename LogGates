@@ -1,0 +1,11 @@
+~ FrontEnd consists of components and screens
+  Initially when you create a react app we have index.js and its related files in our src folder
+  This acts as entry point to app, it contains all the CSS related file import and we place <App /> here which in term calls out App.js file which we create
+  App.js contains our main App- Routes andbasic structure of components like Header-Screens-Footer various components of our application called.
+  'react-router-dom' - Link useParams
+  We have used 'react-bootstrap' which gives various bootstrap ui related functionalities build in like containers,cards,rows,cols etc etc
+  useState,useEffect
+  axios
+  
+~ Backend
+  Created Server.js file which contains express app with get requests - sending product information from ./data/products.js
