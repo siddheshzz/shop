@@ -13,9 +13,12 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { listMyOrders } from "../actions/orderActions";
+import FormContainer from "../components/FormContainer";
+import { USER_UPDATE_RESET } from "../constants/userConstants";
 
 const UserEditScreen = () => {
   const params = useParams();
+  const userId = params.id
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -26,68 +29,82 @@ const UserEditScreen = () => {
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  
+  const userUpdate = useSelector((state) => state.userUpdate)
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = userUpdate
+
 
   useEffect(() => {
+    if (successUpdate) {
+        dispatch({ type: USER_UPDATE_RESET })
+        navigate('/admin/userlist')
+      } else {
+        if (!user.name || user._id !== userId) {
+          dispatch(getUserDetails(userId))
+        } else {
+          setName(user.name)
+          setEmail(user.email)
+          setIsAdmin(user.isAdmin)
+        }
+      }
 
-  }, [dispatch, navigate, userInfo, user]);
+  }, [dispatch, navigate, userId, user,successUpdate]);
 
   const submitHandler = (e) => {};
 
   return (
-    
-    <Row>
-        <p>Siddhesh</p>
-      <Col md={3}>
-        <h2> User Profile </h2>{" "}
-        {/* {message && <Message variant="danger"> {message} </Message>}{" "}
-        {error && <Message variant="danger"> {error} </Message>}{" "}
-        {success && <Message variant="success"> Profile Updated </Message>}{" "} */}
-        {loading && <Loader />}{" "}
-        <Form onSubmit={submitHandler}>
-          <Form.Group controlId="email">
-            <Form.Label> Name </Form.Label>{" "}
-            <Form.Control
-              type="name"
-              placeholder="Enter Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            ></Form.Control>{" "}
-          </Form.Group>{" "}
-          <Form.Group controlId="email">
-            <Form.Label> Email Address </Form.Label>{" "}
-            <Form.Control
-              type="email"
-              placeholder="Enter Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></Form.Control>{" "}
-          </Form.Group>
-          <Form.Group controlId="password">
-            <Form.Label> Password </Form.Label>{" "}
-            <Form.Control
-              type="password"
-              placeholder="Enter Email"
-              //   value={password}
-              //   onChange={(e) => setPassword(e.target.value)}
-            ></Form.Control>{" "}
-          </Form.Group>{" "}
-          <Form.Group controlId="confirmPassword">
-            <Form.Label> Confirm Password </Form.Label>{" "}
-            <Form.Control
-              type="Password"
-              placeholder="Confirm Password"
-              //   value={confirmPassword}
-              //   onChange={(e) => setConfirmPassword(e.target.value)}
-            ></Form.Control>{" "}
-          </Form.Group>
-          <Button type="submit" variant="primary">
-            Update{" "}
-          </Button>{" "}
-        </Form>
-      </Col>{" "}
-    </Row>
+    <>
+    <Link to='/admin/userlist' className='btn btn-light my-3'>
+        Go Back
+      </Link>
+      <FormContainer>
+        <h1>Edit User</h1>
+        {loadingUpdate && <Loader />}
+        {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
+        {loading ? (<Loader/>) :error ? (<Message variant = 'danger'>{error}</Message>):(
+            <Form onSubmit={submitHandler}>
+                <Form.Group controlId='name'>
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type='name'
+                placeholder='Enter name'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId='email'>
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type='email'
+                placeholder='Enter email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <Form.Group controlId='isAdmin'>
+              <Form.Label>isAdmin</Form.Label>
+              <Form.Check
+                type='checkbox'
+                placeholder='Is Admin'
+                value={isAdmin}
+                onChange={(e) => setIsAdmin(e.target.value)}
+              ></Form.Check>
+            </Form.Group>
+
+            
+            <Button type='submit' variant='primary'>
+              Update
+            </Button>
+
+            </Form>
+        )}
+      </FormContainer>
+    </>
   );
 };
 
