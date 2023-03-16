@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap"
-import { Form, Button, Row, Col, Table } from "react-bootstrap";
+import {  Button, Row, Col, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import {listUsers,deleteUser} from '../actions/userActions'
+import {listProducts} from '../actions/productActions'
 
 
 const UserListScreen = () => {
-  
+ 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -22,8 +22,8 @@ const UserListScreen = () => {
 //   const orderListMy = useSelector((state) => state.orderListMy);
 //   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
 
-  const userList = useSelector((state) => state.userList);
-  const { loading, error, users } = userList;
+  const productList = useSelector((state) => state.productList);
+  const { loading, error, products } = productList;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -32,7 +32,7 @@ const UserListScreen = () => {
 
   useEffect(() => {
     if(userInfo && userInfo.isAdmin){
-        dispatch(listUsers())
+        dispatch(listProducts())
     }else{
         navigate('/login')
     }
@@ -40,45 +40,54 @@ const UserListScreen = () => {
 
   const deleteHandler = (id) => {
     if(window.confirm('Are you sure')){
-        dispatch(deleteUser(id))
+        // dispatch(deleteUser(id))
     }
   };
+  const createProductHandler={}
 
   return (
-    <Row>
-      <Col md={9}>
-        <h2> Users </h2>{" "}
+    <>
+    <Row className="align-items-center">
+        <Col>
+        <h1>Products</h1>
+        </Col>
+        <Col className='text-right'>
+            <Button className='my-3' onClick={createProductHandler}>
+                <i className="fas fa-plus"></i> Create Product
+            </Button>
+        </Col>
+
+    </Row>
+
+     
+        <h2> </h2>{" "}
         {loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> :(
           <Table striped bordered hover responsive className='table-sm'>
             <thead>
               <tr>
                 <th>ID</th>
                 <th>NAME</th>
-                <th>EMAIL</th>
-                <th>ADMIN</th>
+                <th>PRICE</th>
+                <th>CATEGORY</th>
+                <th>BRAND</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
-                <tr key={user._id}>
-                  <td>{user._id}</td>
-                  <td>{user.name}</td>
-                  <td><a href = {`mailto:${user.email}`}>{user.email}</a></td>
+              {products.map((product) => (
+                <tr key={product._id}>
+                  <td>{product._id}</td>
+                  <td>{product.name}</td>
+                  <td>${product.price}</td>
+                  <td>{product.category}</td>
+                  <td>{product.brand}</td>
+                  
                   <td>
-                    {user.isAdmin ? (
-                        <i className = 'fas fas-check' style={{color:'green'}}></i>
-                        
-                    ):(
-                        <i className = 'fas fas-times' style={{color:'red'}}></i>)}
-                    
-                  </td>
-                  <td>
-                    <LinkContainer to={`/admin/user/${user._id}/edit`}>
+                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
                       <Button className="btn-sm"variant='light'><i className='fas fa-edit'></i></Button>
                     </LinkContainer>
                     <Button variant='danger' className='btn-sm' onClick={()=>
-                    deleteHandler(user._id)}>
+                    deleteHandler(product._id)}>
                         <i className = 'fas fa-trash'></i>
                     </Button>
                   </td>
@@ -89,8 +98,8 @@ const UserListScreen = () => {
             </tbody>
           </Table>
         )}
-      </Col>{" "}
-    </Row>
+     
+    </>
   );
 };
 

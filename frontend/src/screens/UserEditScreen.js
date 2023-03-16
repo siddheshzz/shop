@@ -11,7 +11,7 @@ import { Form, Button, Row, Col, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { getUserDetails, updateUserProfile } from "../actions/userActions";
+import { getUserDetails, updateUser, updateUserProfile } from "../actions/userActions";
 import { listMyOrders } from "../actions/orderActions";
 import FormContainer from "../components/FormContainer";
 import { USER_UPDATE_RESET } from "../constants/userConstants";
@@ -54,7 +54,10 @@ const UserEditScreen = () => {
 
   }, [dispatch, navigate, userId, user,successUpdate]);
 
-  const submitHandler = (e) => {};
+  const submitHandler = (e) => {
+    e.preventDefault()
+    dispatch(updateUser({ _id: userId, name, email, isAdmin }))
+  };
 
   return (
     <>
