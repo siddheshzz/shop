@@ -5,7 +5,7 @@ import {  Button, Row, Col, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import {listProducts} from '../actions/productActions'
+import {deleteProduct, listProducts} from '../actions/productActions'
 
 
 const UserListScreen = () => {
@@ -40,7 +40,7 @@ const UserListScreen = () => {
 
   const deleteHandler = (id) => {
     if(window.confirm('Are you sure')){
-        // dispatch(deleteUser(id))
+        dispatch(deleteProduct(id))
     }
   };
   const createProductHandler={}
@@ -57,10 +57,7 @@ const UserListScreen = () => {
             </Button>
         </Col>
 
-    </Row>
-
-     
-        <h2> </h2>{" "}
+    </Row>  
         {loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> :(
           <Table striped bordered hover responsive className='table-sm'>
             <thead>
