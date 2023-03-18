@@ -51,30 +51,7 @@ const createProduct = asyncHandler(async(req, res) => {
     })
 
     const createdProduct = await product.save()
-    res.status(201).json(createProduct)
-        // if (userExist) {
-        //     res.status(400)
-        //     throw new Error(`User ${name} already exists`)
-        // }
-
-    // const user = await User.create({
-    //     name,
-    //     email,
-    //     password,
-    // })
-
-    // if (user) {
-    //     res.status(201).json({
-    //         _id: user._id,
-    //         name: user.name,
-    //         email: user.email,
-    //         isAdmin: user.isAdmin,
-    //         token: generateToken(user._id),
-    //     })
-    // } else {
-    //     res.status(400)
-    //     throw new Error('Invalid user Data')
-    // }
+    res.status(201).json(createdProduct)
 
 })
 
@@ -99,7 +76,7 @@ const updateProduct = asyncHandler(async(req, res) => {
         product.name = name
         product.price = price
         product.description = description
-        prodcut.image = image
+        product.image = image
         product.brand = brand
         product.category = category
         product.countInStock = countInStock

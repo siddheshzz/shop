@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
   Link,
-  redirect,
-  useLocation,
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
-import { Form, Button, Row, Col, Table } from "react-bootstrap";
+
+import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { getUserDetails, updateUser, updateUserProfile } from "../actions/userActions";
-import { listMyOrders } from "../actions/orderActions";
+import { getUserDetails, updateUser} from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
 import { USER_UPDATE_RESET } from "../constants/userConstants";
 
