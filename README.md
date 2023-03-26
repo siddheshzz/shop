@@ -15,6 +15,7 @@
 - PayPal / credit card integration
 - Database seeder (products & users)
 - JWT
+- SendGrid Email
 
 
 ## Usage
